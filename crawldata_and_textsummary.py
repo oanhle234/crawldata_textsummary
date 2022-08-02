@@ -3,6 +3,7 @@ import re
 import bs4 as bs
 import nltk
 import heapq
+import json
 from bs4 import BeautifulSoup
 from lxml import html
 nltk.download('punkt')
@@ -18,7 +19,7 @@ soup = BeautifulSoup(page.content, 'html.parser')
 def title():
     list_title = soup.find_all('a', class_='titlelink')
     for title in list_title:
-        print (title.get_text())
+        print(title.get_text())
     return()
 
 def summary():
@@ -62,23 +63,19 @@ def summary():
     summary_sentences = heapq.nlargest(7, sentence_scores, key=sentence_scores.get)
 
     summary = ' '.join(summary_sentences)
-    print('SUMMARY:')
     print(summary)
-    print('*' * 20)
+    print('*' * 30)
     return()
 
 list_link = soup.find_all(class_='titlelink')
-#for i in list_link:
-#    print (i.get('href'))
-
 for link in list_link:
     url_article = link.get('href')
-    source = requests.get(url_article)
+    a = re.findall('^http', url_article)
+    if a:
+        urls = url_article
+    else:
+        urls = 'https://news.ycombinator.com/' + url_article
+
+    source = requests.get(urls)
     x = source.text
-    
     summary()
-    #if re.search('^http', url_article):
-    #    print(url_article)
-    #else:
-    #    url_of_relative_path = 'https://news.ycombinator.com/' + url_article
-    #    print(url_of_relative_path)
