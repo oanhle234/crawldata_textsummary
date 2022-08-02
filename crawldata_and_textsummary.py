@@ -72,13 +72,13 @@ list_link = soup.find_all(class_='titlelink')
 #    print (i.get('href'))
 
 for link in list_link:
-    url1 = link.get('href')
-    source = requests.get(url1)
+    url_article = link.get('href')
+    source = requests.get(url_article)
     x = source.text
     
     summary()
-    #if re.search('^http', url1):
-    #    print(url1)
+    #if re.search('^http', url_article):
+    #    print(url_article)
     #else:
-    #    url2 = url + url1
-    #    print(url2)
+    #    url_of_relative_path = 'https://news.ycombinator.com/' + url_article
+    #    print(url_of_relative_path)
